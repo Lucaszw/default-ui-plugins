@@ -46,9 +46,6 @@ class UIController extends MQTTClient {
     this.onStateMsg("device-model", "device", this.onDeviceUpdated.bind(this));
     this.onStateMsg("electrodes-model", "electrodes", this.onElectrodeStatesSet.bind(this));
     this.onPutMsg("routes", this.onRoutesUpdated.bind(this));
-    // this.addGetRoute("microdrop/state/device", this.onDeviceUpdated.bind(this));
-    // this.addGetRoute("microdrop/put/dmf-device-ui/state/electrodes", this.onElectrodeStatesSet.bind(this));
-    // this.addGetRoute("microdrop/put/dmf-device-ui/state/routes", this.onRoutesUpdated.bind(this));
   }
 
   render() {
@@ -104,7 +101,7 @@ class UIController extends MQTTClient {
     console.log("Drawing new routes...");
     console.log(data);
     if (data == null) return;
-    const routesAsDataFrame = new DataFrame(data);
+    const routesAsDataFrame = new DataFrame(data.dropRoutes);
     this.routesAsDataFrame = routesAsDataFrame;
   }
 }

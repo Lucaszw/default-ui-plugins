@@ -1,0 +1,6 @@
+{
+  "name": "default-ui-plugins",
+  "version": "0.0.1",
+  "type": "ui",
+  "script": "default-ui-plugins.js"
+}

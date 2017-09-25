@@ -45,7 +45,7 @@ class UIController extends MQTTClient {
   listen() {
     this.onStateMsg("device-model", "device", this.onDeviceUpdated.bind(this));
     this.onStateMsg("electrodes-model", "electrodes", this.onElectrodeStatesSet.bind(this));
-    this.onPutMsg("routes", this.onRoutesUpdated.bind(this));
+    this.onStateMsg("routes-model", "routes", this.onRoutesUpdated.bind(this));
   }
 
   render() {
@@ -98,10 +98,9 @@ class UIController extends MQTTClient {
   }
   onRoutesUpdated(payload) {
     const data = JSON.parse(payload);
-    console.log("Drawing new routes...");
-    console.log(data);
     if (data == null) return;
-    const routesAsDataFrame = new DataFrame(data.dropRoutes);
+    if (data.drop_routes == null) return;
+    const routesAsDataFrame = new DataFrame(data.drop_routes);
     this.routesAsDataFrame = routesAsDataFrame;
   }
 }

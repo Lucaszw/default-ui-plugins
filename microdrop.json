@@ -2,5 +2,9 @@
   "name": "default-ui-plugins",
   "version": "0.0.1",
   "type": "ui",
-  "script": "default-ui-plugins.js"
+  "script": "default-ui-plugins.js",
+  "views": [
+    "default-ui-iframes/device.html", 
+    "default-ui-iframes/electrode-settings.html",
+    "default-ui-iframes/plot.html"]
 }

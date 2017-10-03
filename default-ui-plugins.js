@@ -1,4 +1,3 @@
-if (!window.microdropPlugins) window.microdropPlugins = new Map();
 if (!window.widgets) window.widgets = new Object();
 
 // TODO: Find better method for inter-widget communication

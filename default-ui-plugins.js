@@ -34,10 +34,9 @@ class UIController extends MQTTClient {
     this.deviceView = deviceView;
     this.device_ui_plugin = new DeviceUIPlugin(this.deviceView);
     this.device_ui_client = new MQTTClient("device-ui");
-    this.device_ui_plugin.listen(this.device_ui_client.client);
+    this.device_ui_plugin.listen(this.device_ui_client);
 
     this.electrode_states = null;
-    this.listen();
     this.render();
   }
 
@@ -87,7 +86,15 @@ class UIController extends MQTTClient {
   }
 
   onDeviceUpdated(payload) {
-    this.device = JSON.parse(payload);
+    const device = JSON.parse(payload);
+    // XXX: Validate device exists in backend (not here)
+    delete device.__head__;
+    if (_.isEmpty(device)){
+      console.warn("<UIPlugin>:: device object is empty", JSON.parse(payload));
+      return;
+    }
+
+    this.device = device;
   }
   onElectrodeStatesSet(payload) {
     console.log("Electrodes states set!!!!!");

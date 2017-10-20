@@ -65,12 +65,6 @@ class UIController extends MQTTClient {
     if (prevRoutes) this.routesAsDataFrame = prevRoutes;
   }
 
-  get routesAsDataFrame() {return this._routesAsDataFrame}
-  set routesAsDataFrame(df_routes) {
-    this._routesAsDataFrame = df_routes;
-    if (this.device) this.device_ui_plugin.setRoutes(this.routesAsDataFrame);
-  }
-
   onDeviceUpdated(payload) {
     const device = JSON.parse(payload);
     // XXX: Validate device exists in backend (not here)
@@ -83,15 +77,11 @@ class UIController extends MQTTClient {
   }
   onElectrodeStatesSet(payload) {
     const data = JSON.parse(payload);
-    console.log("DATA", data);
     this.device_ui_plugin.applyElectrodeStates(data);
   }
   onRoutesUpdated(payload) {
     const data = JSON.parse(payload);
-    if (data == null) return;
-    if (data.drop_routes == null) return;
-    const routesAsDataFrame = new DataFrame(data.drop_routes);
-    this.routesAsDataFrame = routesAsDataFrame;
+    this.device_ui_plugin.setRoutes(data);
   }
 }
 

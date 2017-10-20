@@ -35,8 +35,6 @@ class UIController extends MQTTClient {
     this.device_ui_plugin = new DeviceUIPlugin(this.deviceView);
     this.device_ui_client = new MQTTClient("device-ui");
     this.device_ui_plugin.listen(this.device_ui_client);
-
-    this.electrode_states = null;
     this.render();
   }
 
@@ -66,18 +64,6 @@ class UIController extends MQTTClient {
     }
     if (prevRoutes) this.routesAsDataFrame = prevRoutes;
   }
-  get electrodeStates() {return this._electrodeStates}
-  set electrodeStates(electrodeStates) {
-    this._electrodeStates = electrodeStates;
-    if (this.device) {
-      try {
-        this.device_ui_plugin.applyElectrodeStates(this.electrodeStates);
-      } catch (e) {
-        console.error("Failed to apply electrode states");
-        console.log(e);
-      }
-    }
-  }
 
   get routesAsDataFrame() {return this._routesAsDataFrame}
   set routesAsDataFrame(df_routes) {
@@ -93,14 +79,12 @@ class UIController extends MQTTClient {
       console.warn("<UIPlugin>:: device object is empty", JSON.parse(payload));
       return;
     }
-
     this.device = device;
   }
   onElectrodeStatesSet(payload) {
-    console.log("Electrodes states set!!!!!");
-    // TODO: Don't require mapping data to electrode_states key
     const data = JSON.parse(payload);
-    this.electrodeStates = extractElectrodeStates({electrode_states: data});
+    console.log("DATA", data);
+    this.device_ui_plugin.applyElectrodeStates(data);
   }
   onRoutesUpdated(payload) {
     const data = JSON.parse(payload);
